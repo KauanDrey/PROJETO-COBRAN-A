@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{LayoutPadrao}">
+<head>
+<title>Pesquisa de Títulos</title>
+
+
+</head>
+
+<section layout:fragment="conteudo">
+<div th:replace="MensagemGeral"></div>
+
+		<div class ="panel panel-default">
+		<div class="panel-heading">
+		<div class="clearfix">
+		<h1 class="panel-title aw-title-panel"> &#160; Pesquisa Títulos</h1>
+		<a class="btn btn-link gft-link-panel" href="/titulos/novo">Novo título</a>
+		</div>
+		</div>
+		<div class="panel-body"> 
+		
+		<form method="GET" class="form-horizontal" action="/titulos" th:object="${filtro}">
+		<div class="form-group">
+		<div class="col-sm-4">
+		<div class="input-group">
+		<input class="form-control" placeholder="Qual título você está procurando?"
+		autofocus="autofocus" th:field="*{descricao}"></input>
+		<span class="input-group-btn">
+		<button type="submit" class="btn btn-default">
+		<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+  <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+</svg>
+		
+		</button>
+		
+		</span>
+		</div>
+		
+		
+		</div>
+		
+		
+		
+		</div>	
+		</form>
+		
+		<table class="table table-bordered table-striped">
+		
+	<thead>
+		<tr>
+			<th >#</th>
+			<th class="text-center col-md-2">Descrição</th>
+			<th class="text-center col-md-2">Data de Vencimento</th>
+			<th class="text-right col-md-2">Valor</th>
+			<th class="text-center col-md-2">Status</th>
+			<th class="col-md-1"></th>
+			
+				</tr>
+				</thead>
+			<tbody>
+			<tr th:each="titulo:${titulos}">
+			
+			<td class="text-center" th:text="${titulo.codigo}">1</td>
+			<td th:text="${titulo.descricao}"></td>
+			<td class="text-center" th:text="${{titulo.dataVencimento}}"></td>
+			<td class="text-right" th:text="${{titulo.valor}}"></td>
+			<td class="text-center" th:attr="data-role=${titulo.codigo}" >
+			
+			<span class="label" th:text="${titulo.status.descricao}"
+			
+				th:classappend="${titulo.pendente ? 'badge-danger' : 'badge-success'}"></span>
+			       
+			       </td>
+			<td class="text-center">
+			<a class="btn btn-link btn-xs" th:href="@{/titulos/{codigo}(codigo=${titulo.codigo})}" title="Editar" rel="tooltip" data-placement="top" >
+			<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+ 		 	<path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+			</svg>
+			</a>
+			<a class="btn btn-link" data-toggle="modal" data-target="#exampleModal" th:href="@{/titulos/{codigo}(codigo=${titulo.codigo})}"
+			th:attr="data-codigo=${titulo.codigo}, data-descricao=${titulo.descricao}"  title="Excluir" rel="tooltip" data-placement="top" >
+			<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor">
+  			<path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+			</svg> 
+			</a>
+			<a class="btn btn-link js-atualizar-status" th:if="${titulo.pendente}"
+			title="Receber" rel="tooltip" data-placement="top"
+			th:attr="data-codigo=${titulo.codigo}"
+			th:href="@{/titulos/{codigo}/receber(codigo=${titulo.codigo})}">
+	<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+  <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 0 0 3 14.5h10a1.5 1.5 0 0 0 1.5-1.5V8a.5.5 0 0 0-1 0v5a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5h8a.5.5 0 0 0 0-1H3A1.5 1.5 0 0 0 1.5 3v10z"/>
+</svg>
+			
+			
+			</a>
+			
+			</td>
+			</tr>
+			
+			
+			
+			<tr>
+			<td colspan="6" th:if="${#lists.isEmpty(titulos)}">Nenhum título foi encontrado </td>
+			</tr>
+			
+			</tbody>
+		</table>		
+	</div>	
+	
+	<div th:replace="DialogoConfirmacaoExclusao"></div>
+				
+	</div>
+	</section>
+	</html>
+	
+	
+	
+	
+	
+	
